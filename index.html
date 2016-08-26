@@ -9,9 +9,27 @@
     window.addEventListener('load', Game.start);
   </script>
   <style type="text/css" media="screen">
-    body { background: black; }
+    body {
+      background: black;
+      text-align: center;
+      color: #DDD;
+      font-family: Arial;
+    }
+    .controls {
+      color: #BBB;
+    }
+    #cr-stage { margin: 20px auto 0;}
+    .bottom a {
+      color:#AAA;
+    }
+  </style>
   </style>
 </head>
 <body>
+  <p> Worms </p>
+  <div id = "cr-stage"></div>
+  <p> Current Position:</span> <span id = '_position' class = 'class_stats'></p>
+  <p> Worms:</span> <span id = '_num_worms' class = 'class_stats'></p>
+
 </body>
 </html>

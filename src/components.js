@@ -30,7 +30,7 @@ Crafty.c('Actor', {
 // A Tree is just an Actor with a certain sprite
 Crafty.c('Tree', {
   init: function() {
-    this.requires('Actor, Color, Solid')
+    this.requires('Actor, Color, Solid, Collision')
     .color('rgb(51, 0, 0)');
   },
 });
@@ -63,13 +63,99 @@ Crafty.c('Table', {
 
 });
 
+Crafty.c('Worm', {
+  init: function(){
+    this.requires('Actor, Color, Collision, Carriable, Tween')
+    .attr({h:8, w:8})
+    .color('rgb(0,255,0)')
+    .onHit('Solid', this.stopOnSolids)
+    .onHit('Pushable', this.stopOnSolids)
+    .onHit('Player', this.stopOnSolids)
+    .bind('TweenEnd', function(){
+
+    })
+    .bind('EnterFrame', function(){
+
+          /// Move a worm 20% of the time 
+          if(Math.random() < .01){
+
+
+              /// pick a neiboring cell
+            this_x = Math.round(this.at().x)
+            this_y = Math.round(this.at().y)
+
+            this.og_x = this_x
+            this.og_y = this_y
+
+            //console.log(this_x, this_y)
+            // Not really open yet but will do 
+
+            open_spaces = [
+              [this_x -1, this_y -1], //0 
+              [this_x  , this_y -1], //1
+              [this_x + 1, this_y -1], //2
+              [this_x + 1, this_y], //3
+              [this_x + 1, this_y + 1], //4
+              [this_x , this_y + 1], //5
+              [this_x -1, this_y + 1], //6
+              [this_x -1, this_y ], //7 
+            ]
+
+            this_index = Math.floor((Math.random() * open_spaces.length));
+            this.destination_index = this_index 
+            this.tween({x: open_spaces[this_index][0] * Game.map_grid.tile.height, y:open_spaces[this_index][1] * Game.map_grid.tile.width}, 1000)
+        }
+
+    });
+  },
+
+  reverseTweening: false,
+
+  stopOnSolids: function() {
+
+    /// Clever list where the index produces the opeosite direction
+    opposites = [
+      [this_x + 1, this_y + 1],
+      [this_x , this_y + 1],
+      [this_x -1, this_y + 1],
+      [this_x -1, this_y ],
+      [this_x -1, this_y -1],
+      [this_x  , this_y -1],
+      [this_x + 1, this_y -1],
+      [this_x + 1, this_y],
+
+    ]
+    this.tween({x:this.og_x * Game.map_grid.tile.height , y:this.og_y * Game.map_grid.tile.width}, 500)
+    
+    // this.cancelTween('x')
+    // this.cancelTween('y')
+  },
+
+
+  fed: false,
+  clean: false,
+  asleep: false
+})
+
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
   init: function() {
-    this.requires('Actor, Player ,Fourway, Color, Collision')
+    this.requires('Actor, Player ,Fourway, Color, Collision, Keyboard')
       .fourway(2)
       .color('rgb(20, 75, 40)')
       .stopOnSolids()
+      .bind('KeyDown', function(e){
+        if(e.key == 67){
+          this.c_pressed = true
+        }else{
+          this.c_pressed = false 
+        }
+
+        if(e.key == 86){
+          this.dropWorms()
+        }
+      })
+      .onHit('Carriable', this.pickupWorm)
       .onHit('Pushable', this.pushObject)
       // Whenever the PC touches a village, respond to the event
       .bind("Moved", function(){
@@ -81,6 +167,8 @@ Crafty.c('PlayerCharacter', {
           {
             Crafty.viewport.y = (this.y - (Game.screen_view.height / 2)) * -1;
           }
+
+          document.getElementById('_position').innerHTML = String(this.at().x).concat(" , ",  String(this.at().y))
         });
   },
 
@@ -101,6 +189,88 @@ Crafty.c('PlayerCharacter', {
     }
   },
 
+  worms_in_arms: 0,
+  worm_in_arms_properties: [],
+
+  pickupWorm: function(data){
+    
+    if (this.c_pressed == true){
+      this_worm = data[0].obj;
+      //console.log(this_worm)
+      this.worms_in_arms = this.worms_in_arms + 1 
+
+      // Save the properties for later
+      this.worm_in_arms_properties.push({
+          'fed': this_worm.fed,
+          'clean': this_worm.clean,
+          'asleep': this_worm.asleep,
+      })
+
+      this_worm.destroy()
+
+      document.getElementById('_num_worms').innerHTML = String(this.worms_in_arms)
+
+    }else{
+      this.stopMovement()
+    }
+
+
+  }, // end pick up Worm 
+
+  updateWormTracker: function() {
+    document.getElementById('_num_worms').innerHTML = String(this.worms_in_arms)
+
+  },
+
+  dropWorms: function(){
+
+    // get list of open spaces 
+    this_x = Math.round(this.at().x)
+    this_y = Math.round(this.at().y)
+
+    //console.log(this_x, this_y)
+    // Not really open yet but will do 
+
+    open_spaces = [
+      [this_x -1, this_y -1],
+      [this_x  , this_y -1],
+      [this_x + 1, this_y -1],
+      [this_x + 1, this_y],
+      [this_x + 1, this_y + 1],
+      [this_x , this_y + 1],
+      [this_x -1, this_y + 1],
+      [this_x -1, this_y ],
+    ]
+
+    for( i = 0; i < this.worms_in_arms; i++){
+
+
+      // pick a random open pace 
+      this_index = Math.floor((Math.random() * open_spaces.length));
+
+      this_worm = Crafty.e("Worm").at(open_spaces[this_index][0], open_spaces[this_index][1])
+
+      while(this_worm.hit('Solid') != false & this_worm.hit('Pushable') != false){
+
+          this_index = Math.floor((Math.random() * open_spaces.length));
+
+          this_worm.at(open_spaces[this_index][0], open_spaces[this_index][1])
+      }
+
+      // Populate with the right properties 
+      this_worm.fed = this.worm_in_arms_properties[i].fed
+      this_worm.clean = this.worm_in_arms_properties[i].clean
+      this_worm.asleep = this.worm_in_arms_properties[i].asleep
+
+    }
+
+    // empty these lists 
+    this.worms_in_arms = 0
+    this.worm_in_arms_properties = []
+    this.updateWormTracker()
+
+  }, // end of Drop Worms 
+
   pushObject: function(data){
     this._speed = this._speed/ 10
     object_hit = data[0].obj;
@@ -109,7 +279,7 @@ Crafty.c('PlayerCharacter', {
       this.x -= this._movement.x;
       this.y -= this._movement.y;
 
-      if(object_hit.hit('Solid', type = "SAT") == false & object_hit.hit('Pushable', type = "SAT") == false){
+      if(object_hit.hit('Solid', type = "SAT") == false & object_hit.hit('Pushable', type = "SAT") == false & object_hit.hit('Carriable', type = "SAT") == false){
 
         object_hit.x += this._movement.x;
         object_hit.y += this._movement.y;
@@ -137,6 +307,6 @@ Crafty.c('PlayerCharacter', {
 
     }
 
-  },
+  }, /// end of Psuh Object 
 
 });

@@ -151,7 +151,7 @@ Crafty.scene('Game', function() {
   chair5 = Crafty.e('Chair').at(27, 8);
   Game.chair_list.push(chair5)
 
-  chair6 = Crafty.e('Chair').at(34,0);
+  chair6 = Crafty.e('Chair').at(34,8);
   Game.chair_list.push(chair6)
 
   chair7 = Crafty.e('Chair').at(22, 9);
@@ -162,6 +162,39 @@ Crafty.scene('Game', function() {
 
   chair9 = Crafty.e('Chair').at(32, 5);
   Game.chair_list.push(chair9)
+
+
+  // Worms
+
+  Game.worm_list = []
+  worm_num = 50
+  /// Create some worms 
+  for(i = 1; i <= worm_num; i++){
+
+    
+
+    this_x = Math.floor((Math.random() * Game.map_grid.width));
+    this_y = Math.floor((Math.random() * Game.map_grid.height));
+
+
+    this_worm = Crafty.e("Worm").at(this_x, this_y)
+
+    //console.log(this_worm.hit('Solid'),this_worm.hit('Pushable')) 
+    while(this_worm.hit('Solid') != false || this_worm.hit('Pushable') != false){
+      //console.log("In While")
+
+      this_x = Math.floor((Math.random() * Game.map_grid.width));
+      this_y = Math.floor((Math.random() * Game.map_grid.height));
+
+      this_worm.at(this_x, this_y)
+
+      //console.log(this_worm.hit('Solid'), this_worm.hit('Pushable')) 
+    }
+
+    // add this worm to the worm list 
+    Game.worm_list.push(this_worm)
+  }
+
 
 
 
