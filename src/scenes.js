@@ -24,39 +24,146 @@ Crafty.scene('Game', function() {
         // Place a tree entity at the current tile
         Crafty.e('Tree').at(x, y);
         this.occupied[x][y] = true;
-      } else if (Math.random() < 0.06 && !this.occupied[x][y]) {
-        // Place a bush entity at the current tile
-        Crafty.e('Bush').at(x, y);
-        this.occupied[x][y] = true;
-      }
+      } 
     }
   }
 
-  // Generate up to five villages on the map in random locations
-  var max_villages = 5;
-  for (var x = 0; x < Game.map_grid.width; x++) {
-    for (var y = 0; y < Game.map_grid.height; y++) {
-      if (Math.random() < 0.02) {
-        if (Crafty('Village').length < max_villages && !this.occupied[x][y]) {
-          Crafty.e('Village').at(x, y);
-        }
-      }
-    }
-  }
+
+  /// Generate Bookshelves
+  Crafty.e('Shelf').at(9,9)
+  Crafty.e('Shelf').at(9,10)
+  Crafty.e('Shelf').at(9,11)
+  Crafty.e('Shelf').at(9,12)
+  Crafty.e('Shelf').at(9,13)
+  Crafty.e('Shelf').at(9,14)
+  Crafty.e('Shelf').at(9,15)
+  Crafty.e('Shelf').at(9,16)
+
+  Crafty.e('Shelf').at(9,20)
+  Crafty.e('Shelf').at(9,21)
+  Crafty.e('Shelf').at(9,22)
+  Crafty.e('Shelf').at(9,23)
+  Crafty.e('Shelf').at(9,24)
+  Crafty.e('Shelf').at(9,25)
+  Crafty.e('Shelf').at(9,26)
+  Crafty.e('Shelf').at(9,27)
+
+  Crafty.e('Shelf').at(13,20)
+  Crafty.e('Shelf').at(13,21)
+  Crafty.e('Shelf').at(13,22)
+  Crafty.e('Shelf').at(13,23)
+  Crafty.e('Shelf').at(13,24)
+  Crafty.e('Shelf').at(13,25)
+  Crafty.e('Shelf').at(13,26)
+  Crafty.e('Shelf').at(13,27)
+
+  Crafty.e('Shelf').at(17,20)
+  Crafty.e('Shelf').at(17,21)
+  Crafty.e('Shelf').at(17,22)
+  Crafty.e('Shelf').at(17,23)
+  Crafty.e('Shelf').at(17,24)
+  Crafty.e('Shelf').at(17,25)
+  Crafty.e('Shelf').at(17,26)
+  Crafty.e('Shelf').at(17,27)
+
+  Crafty.e('Shelf').at(21,20)
+  Crafty.e('Shelf').at(21,21)
+  Crafty.e('Shelf').at(21,22)
+  Crafty.e('Shelf').at(21,23)
+  Crafty.e('Shelf').at(21,24)
+  Crafty.e('Shelf').at(21,25)
+  Crafty.e('Shelf').at(21,26)
+  Crafty.e('Shelf').at(21,27)
+
+  Crafty.e('Shelf').at(25,20)
+  Crafty.e('Shelf').at(25,21)
+  Crafty.e('Shelf').at(25,22)
+  Crafty.e('Shelf').at(25,23)
+  Crafty.e('Shelf').at(25,24)
+  Crafty.e('Shelf').at(25,25)
+  Crafty.e('Shelf').at(25,26)
+  Crafty.e('Shelf').at(25,27)
+
+  Crafty.e('Shelf').at(29,20)
+  Crafty.e('Shelf').at(29,21)
+  Crafty.e('Shelf').at(29,22)
+  Crafty.e('Shelf').at(29,23)
+  Crafty.e('Shelf').at(29,24)
+  Crafty.e('Shelf').at(29,25)
+  Crafty.e('Shelf').at(29,26)
+  Crafty.e('Shelf').at(29,27)
+
+  Crafty.e('Shelf').at(33,20)
+  Crafty.e('Shelf').at(33,21)
+  Crafty.e('Shelf').at(33,22)
+  Crafty.e('Shelf').at(33,23)
+  Crafty.e('Shelf').at(33,24)
+  Crafty.e('Shelf').at(33,25)
+  Crafty.e('Shelf').at(33,26)
+  Crafty.e('Shelf').at(33,27)
+
+
+
+  // Generate up to tables
+  Crafty.e('Table').at(23, 9);
+  Crafty.e('Table').at(24, 9);
+  Crafty.e('Table').at(23, 10);
+  Crafty.e('Table').at(24, 10);
+  Crafty.e('Table').at(28, 9);
+  Crafty.e('Table').at(29, 9);
+  Crafty.e('Table').at(28, 10);
+  Crafty.e('Table').at(29, 10);
+  Crafty.e('Table').at(33, 9);
+  Crafty.e('Table').at(34, 9);
+  Crafty.e('Table').at(33, 10);
+  Crafty.e('Table').at(34, 10);
+  Crafty.e('Table').at(23, 14);
+  Crafty.e('Table').at(24, 14);
+  Crafty.e('Table').at(23, 15);
+  Crafty.e('Table').at(24, 15);
+  Crafty.e('Table').at(28, 14);
+  Crafty.e('Table').at(29, 14);
+  Crafty.e('Table').at(28, 15);
+  Crafty.e('Table').at(29, 15);
+  Crafty.e('Table').at(33, 14);
+  Crafty.e('Table').at(34, 14);
+  Crafty.e('Table').at(33, 15);
+  Crafty.e('Table').at(34, 15);
+
+
 
   // Create some Charis 
-  var max_chairs = 5;
+
   Game.chair_list = []
-  for (var x = 0; x < Game.map_grid.width; x++) {
-    for (var y = 0; y < Game.map_grid.height; y++) {
-      if (Math.random() < 0.05) {
-        if (Crafty('Chair').length < max_chairs && !this.occupied[x][y]) {
-          this_chair = Crafty.e('Chair').at(x, y);
-          Game.chair_list.push(this_chair)
-        }
-      }
-    }
-  }
+
+  chair1 = Crafty.e('Chair').at(24,5);
+  Game.chair_list.push(chair1)
+
+  chair2 = Crafty.e('Chair').at(27, 5);
+  Game.chair_list.push(chair2)
+
+  chair3 = Crafty.e('Chair').at(30, 4);
+  Game.chair_list.push(chair3)
+
+  chair4 = Crafty.e('Chair').at(30, 6);
+  Game.chair_list.push(chair4)
+
+  chair5 = Crafty.e('Chair').at(27, 8);
+  Game.chair_list.push(chair5)
+
+  chair6 = Crafty.e('Chair').at(34,0);
+  Game.chair_list.push(chair6)
+
+  chair7 = Crafty.e('Chair').at(22, 9);
+  Game.chair_list.push(chair7)
+
+  chair8 = Crafty.e('Chair').at(26, 4);
+  Game.chair_list.push(chair8)
+
+  chair9 = Crafty.e('Chair').at(32, 5);
+  Game.chair_list.push(chair9)
+
+
 
   // Show the victory screen once all villages are visisted
   this.show_victory = this.bind('VillageVisited', function() {
