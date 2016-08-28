@@ -4,14 +4,14 @@ Game = {
     width:  42, //24
     height: 34, //16
     tile: {
-      width:  16, 
-      height: 16
+      width:  32, 
+      height: 32
     }
   },
 
   screen_view: {
-  	width: 24 * 16,
-  	height: 16 * 16
+  	width: 24 * 32,
+  	height: 16 * 32
   },
 
   // The total width of the game screen. Since our grid takes up the entire screen

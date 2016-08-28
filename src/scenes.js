@@ -163,6 +163,39 @@ Crafty.scene('Game', function() {
   chair9 = Crafty.e('Chair').at(32, 5);
   Game.chair_list.push(chair9)
 
+  chair10 = Crafty.e('Chair').at(22, 14);
+  Game.chair_list.push(chair10)
+
+  chair11 = Crafty.e('Chair').at(23, 13);
+  Game.chair_list.push(chair11)
+
+  chair12 = Crafty.e('Chair').at(25, 14);
+  Game.chair_list.push(chair12)
+
+  chair13 = Crafty.e('Chair').at(27, 14);
+  Game.chair_list.push(chair13)
+
+  chair14 = Crafty.e('Chair').at(28, 13);
+  Game.chair_list.push(chair14)
+
+  chair15 = Crafty.e('Chair').at(30, 15);
+  Game.chair_list.push(chair15)
+
+  chair16 = Crafty.e('Chair').at(32, 14);
+  Game.chair_list.push(chair16)
+
+  chair17 = Crafty.e('Chair').at(33, 13);
+  Game.chair_list.push(chair17)
+
+  chair18 = Crafty.e('Chair').at(35, 14);
+  Game.chair_list.push(chair18)
+
+
+  // The worm washer 
+  Game.wormWasher = Crafty.e('WormWasher').at(16,10)
+
+  // wormFeeder
+  Game.wormFeeder = Crafty.e('WormFeeder').at(10,10)
 
   // Worms
 
@@ -196,7 +229,7 @@ Crafty.scene('Game', function() {
   }
 
 
-
+///Crafty.e("Worm").at(15, 15)
 
   // Show the victory screen once all villages are visisted
   this.show_victory = this.bind('VillageVisited', function() {
