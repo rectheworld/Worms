@@ -97,17 +97,21 @@ Crafty.c('WashZone', {
   
 
   cleanWorm: function(data){
-    this_worm = data[0].obj
+    for(i = 0; i <= data.length - 1; i++){
+      
+    this_worm = data[i].obj
+    //console.log(this_worm.x, this_worm.y)
 
     /// The idea here is that the circle is inscribes inside the hit rect,
     //so since we know the worm is in the hit rect, now test is worm is in the hit circle 
-    var hit_cirlce = new Crafty.circle(this.x + 16 , this.y + 16, Game.map_grid.tile.width * 3.5) // Will be used for colision detetions later 
+    var hit_cirlce = new Crafty.circle(this.x + 16 , this.y + 16, Game.map_grid.tile.width * 4) // Will be used for colision detetions later 
 
 
     if(hit_cirlce.containsPoint(this_worm.x, this_worm.y)){
       this_worm.washWorm()
     }
   }
+}
 
 })
 
@@ -140,6 +144,7 @@ Crafty.c('WormFeeder', {
   },
 
   noFood: function(){
+    this.current_feeder_open = false
     this.feedzone.destroy()
   }
 
@@ -187,11 +192,7 @@ Crafty.c('Worm', {
     .colorWorm()
     .onHit('Solid', this.stopOnSolids)
     .onHit('Pushable', this.stopOnSolids)
-    .onHit('Player', function(){
-      if(this.feeding != true){
-        this.stopOnSolids
-    }
-    })
+    .onHit('Player', this.stopOnSolids)
     .onHit('FeedZone', this.feedWorm)
     //.checkHits('Solid')
     .bind('Click', function(MouseEvent){
@@ -218,7 +219,7 @@ Crafty.c('Worm', {
             this.feed_counter = 0
             this.fed = true
             this.colorWorm()
-            this.tween({x:this.og_x, y:this.og_y}, 1000)
+            this.tween({x:this.feed_og_x, y:this.feed_og_y}, 1000)
           }
 
           if(this.tracking){
@@ -284,34 +285,17 @@ Crafty.c('Worm', {
 
 
   stopOnSolids: function() {
+
     if(this.tracking){
     console.log('Backtracking')
     console.log(this.og_x, this.og_y)
     }
-    // Cancel current tween
-    // this.cancelTween('x')
-    // this.cancelTween('y')
 
-    this.reverseTweening = true 
+    if(this.feeding == false){
+      this.reverseTweening = true 
     
-    /// Clever list where the index produces the opeosite direction
-
-    // opposites = [
-    //   [this_x + 1, this_y + 1],
-    //   [this_x , this_y + 1],
-    //   [this_x -1, this_y + 1],
-    //   [this_x -1, this_y ],
-    //   [this_x -1, this_y -1],
-    //   [this_x  , this_y -1],
-    //   [this_x + 1, this_y -1],
-    //   [this_x + 1, this_y],
-    // ]
-
-    //this._log.push( "Backtrack to ".concat(String(this.og_x), " ", String(this.og_y )) )
-
-
-    this.tween({x:this.og_x * Game.map_grid.tile.height , y:this.og_y * Game.map_grid.tile.width}, 500)
-    
+      this.tween({x:this.og_x * Game.map_grid.tile.height , y:this.og_y * Game.map_grid.tile.width}, 500)
+    }
   },
 
 
@@ -345,8 +329,8 @@ Crafty.c('Worm', {
     // onmy exicute if we are not already feeding 
     if(this.feeding == false & this.fed == false){
         // save the postion befor feeding
-        this.og_x = this.x
-        this.og_y = this.y
+        this.feed_og_x = this.x
+        this.feed_og_y = this.y
 
         // pick a point in fron of the feeder     
         feeder_y = Game.wormFeeder.y + Game.map_grid.tile.height + 3
