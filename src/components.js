@@ -27,6 +27,15 @@ Crafty.c('Actor', {
   },
 });
 
+Crafty.c('Carpet', {
+  init: function() {
+    this.requires('Actor, spr_carpet')
+    .attr({z:-1});
+
+  },
+});
+
+
 // A Tree is just an Actor with a certain sprite
 Crafty.c('Tree', {
   init: function() {
@@ -45,8 +54,7 @@ Crafty.c('Shelf', {
 
 Crafty.c('WormWasher', {
   init: function(){
-    this.requires('Actor, Color, Solid ,Keyboard, Collision, WormWasher')
-    .color('rgb(0,0,50')
+    this.requires('Actor, Solid ,Keyboard, Collision, WormWasher, spr_worm_washer')
     .attr({w: Game.map_grid.tile.width, h: Game.map_grid.tile.height})
 
     ;
@@ -80,9 +88,9 @@ Crafty.c('WormWasher', {
 
 Crafty.c('WashZone', {
   init: function(){
-    this.requires('Actor, Color, Collision, Circle')
-    .attr({w: Game.map_grid.tile.width * 3, h:Game.map_grid.tile.height * 3, z: -1})
-    .color('rgb(176,196,222)')
+    this.requires('Actor, Collision, Circle, spr_wash_zone')
+    .attr({w: Game.map_grid.tile.width * 3, h:Game.map_grid.tile.height * 3, z: -.9})
+    //color('rgb(176,196,222)')
     .onHit('Carriable', this.cleanWorm)
     .bind('EnterFrame', function(){
       this.timer = this.timer + 1 
@@ -117,8 +125,8 @@ Crafty.c('WashZone', {
 
 Crafty.c('WormFeeder', {
   init: function(){
-    this.requires('Actor, Color, Solid, Keyboard, Mouse')
-    .color('rgb(200,0,0')
+    this.requires('Actor, Solid, Keyboard, Mouse,spr_feeder')
+    //.color('rgb(200,0,0')
     .attr({w: Game.map_grid.tile.width * 2, h: Game.map_grid.tile.height})
     .bind('Click', function(MouseEvent){
         this.portions = this.portions + 10
@@ -162,10 +170,27 @@ Crafty.c('FeedZone', {
 
 });
 
-Crafty.c('Chair', {
+Crafty.c('ChairRight', {
   init: function() {
-    this.requires('Actor, Color, Pushable, Collision')
-    .color('rgb(120, 0, 0)')
+    this.requires('Actor, Pushable, Collision, spr_chair_right')
+    //.color('rgb(120, 0, 0)')
+    //.onHit('Pushable', this.backup)
+  },
+});
+
+
+Crafty.c('ChairLeft', {
+  init: function() {
+    this.requires('Actor, Pushable, Collision, spr_chair_left')
+    //.color('rgb(120, 0, 0)')
+    //.onHit('Pushable', this.backup)
+  },
+});
+
+Crafty.c('ChairForward', {
+  init: function() {
+    this.requires('Actor, Pushable, Collision, spr_chair_front')
+    //.color('rgb(120, 0, 0)')
     //.onHit('Pushable', this.backup)
   },
 });
@@ -177,8 +202,8 @@ Crafty.c('Chair', {
 // A village is a tile on the grid that the PC must visit in order to win the game
 Crafty.c('Table', {
   init: function() {
-    this.requires('Actor, Color, Solid')
-    .color('rgb(170, 125, 40)');
+    this.requires('Actor, Solid, spr_table')
+    //.color('rgb(170, 125, 40)');
   },
 
 

@@ -11,6 +11,16 @@ Crafty.scene('Game', function() {
     }
   }
 
+
+  /// draw carpet all over the floor 
+  for (var x = 0; x < Game.map_grid.width; x++) {
+    for (var y = 0; y < Game.map_grid.height; y++) {
+        // Place some carpet here 
+        Crafty.e('Carpet').at(x, y);
+    }
+  }
+
+
   // Player character, placed at 5, 5 on our grid
   this.player = Crafty.e('PlayerCharacter').at(5, 5);
   this.occupied[this.player.at().x][this.player.at().y] = true;
@@ -106,29 +116,29 @@ Crafty.scene('Game', function() {
 
   // Generate up to tables
   Crafty.e('Table').at(23, 9);
-  Crafty.e('Table').at(24, 9);
-  Crafty.e('Table').at(23, 10);
-  Crafty.e('Table').at(24, 10);
+  // Crafty.e('Table').at(24, 9);
+  // Crafty.e('Table').at(23, 10);
+  // Crafty.e('Table').at(24, 10);
   Crafty.e('Table').at(28, 9);
-  Crafty.e('Table').at(29, 9);
-  Crafty.e('Table').at(28, 10);
-  Crafty.e('Table').at(29, 10);
+  // Crafty.e('Table').at(29, 9);
+  // Crafty.e('Table').at(28, 10);
+  // Crafty.e('Table').at(29, 10);
   Crafty.e('Table').at(33, 9);
-  Crafty.e('Table').at(34, 9);
-  Crafty.e('Table').at(33, 10);
-  Crafty.e('Table').at(34, 10);
+  // Crafty.e('Table').at(34, 9);
+  // Crafty.e('Table').at(33, 10);
+  // Crafty.e('Table').at(34, 10);
   Crafty.e('Table').at(23, 14);
-  Crafty.e('Table').at(24, 14);
-  Crafty.e('Table').at(23, 15);
-  Crafty.e('Table').at(24, 15);
+  // Crafty.e('Table').at(24, 14);
+  // Crafty.e('Table').at(23, 15);
+  // Crafty.e('Table').at(24, 15);
   Crafty.e('Table').at(28, 14);
-  Crafty.e('Table').at(29, 14);
-  Crafty.e('Table').at(28, 15);
-  Crafty.e('Table').at(29, 15);
+  // Crafty.e('Table').at(29, 14);
+  // Crafty.e('Table').at(28, 15);
+  // Crafty.e('Table').at(29, 15);
   Crafty.e('Table').at(33, 14);
-  Crafty.e('Table').at(34, 14);
-  Crafty.e('Table').at(33, 15);
-  Crafty.e('Table').at(34, 15);
+  // Crafty.e('Table').at(34, 14);
+  // Crafty.e('Table').at(33, 15);
+  // Crafty.e('Table').at(34, 15);
 
 
 
@@ -136,58 +146,58 @@ Crafty.scene('Game', function() {
 
   Game.chair_list = []
 
-  chair1 = Crafty.e('Chair').at(24,5);
+  chair1 = Crafty.e('ChairLeft').at(24,5);
   Game.chair_list.push(chair1)
 
-  chair2 = Crafty.e('Chair').at(27, 5);
+  chair2 = Crafty.e('ChairRight').at(27, 5);
   Game.chair_list.push(chair2)
 
-  chair3 = Crafty.e('Chair').at(30, 4);
+  chair3 = Crafty.e('ChairLeft').at(30, 4);
   Game.chair_list.push(chair3)
 
-  chair4 = Crafty.e('Chair').at(30, 6);
+  chair4 = Crafty.e('ChairLeft').at(30, 6);
   Game.chair_list.push(chair4)
 
-  chair5 = Crafty.e('Chair').at(27, 8);
+  chair5 = Crafty.e('ChairRight').at(27, 8);
   Game.chair_list.push(chair5)
 
-  chair6 = Crafty.e('Chair').at(34,8);
+  chair6 = Crafty.e('ChairRight').at(34,8);
   Game.chair_list.push(chair6)
 
-  chair7 = Crafty.e('Chair').at(22, 9);
+  chair7 = Crafty.e('ChairLeft').at(22, 9);
   Game.chair_list.push(chair7)
 
-  chair8 = Crafty.e('Chair').at(26, 4);
+  chair8 = Crafty.e('ChairForward').at(26, 4);
   Game.chair_list.push(chair8)
 
-  chair9 = Crafty.e('Chair').at(32, 5);
+  chair9 = Crafty.e('ChairRight').at(32, 5);
   Game.chair_list.push(chair9)
 
-  chair10 = Crafty.e('Chair').at(22, 14);
+  chair10 = Crafty.e('ChairLeft').at(22, 14);
   Game.chair_list.push(chair10)
 
-  chair11 = Crafty.e('Chair').at(23, 13);
+  chair11 = Crafty.e('ChairForward').at(23, 13);
   Game.chair_list.push(chair11)
 
-  chair12 = Crafty.e('Chair').at(25, 14);
+  chair12 = Crafty.e('ChairRight').at(25, 14);
   Game.chair_list.push(chair12)
 
-  chair13 = Crafty.e('Chair').at(27, 14);
+  chair13 = Crafty.e('ChairLeft').at(27, 14);
   Game.chair_list.push(chair13)
 
-  chair14 = Crafty.e('Chair').at(28, 13);
+  chair14 = Crafty.e('ChairForward').at(28, 13);
   Game.chair_list.push(chair14)
 
-  chair15 = Crafty.e('Chair').at(30, 15);
+  chair15 = Crafty.e('ChairRight').at(30, 15);
   Game.chair_list.push(chair15)
 
-  chair16 = Crafty.e('Chair').at(32, 14);
+  chair16 = Crafty.e('ChairLeft').at(32, 14);
   Game.chair_list.push(chair16)
 
-  chair17 = Crafty.e('Chair').at(33, 13);
+  chair17 = Crafty.e('ChairForward').at(33, 13);
   Game.chair_list.push(chair17)
 
-  chair18 = Crafty.e('Chair').at(35, 14);
+  chair18 = Crafty.e('ChairRight').at(35, 14);
   Game.chair_list.push(chair18)
 
 
@@ -277,8 +287,44 @@ Crafty.scene('Loading', function(){
     .attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
     .css($text_css)
 
-	Crafty.scene('Game');
+
+      // Load our sprite map image
+  Crafty.load(['assets/spritesheet1.png'], function(){
+    // Once the image is loaded...
+
+    // Define the individual sprites in the image
+    // Each one (spr_tree, etc.) becomes a component
+    // These components' names are prefixed with "spr_"
+    //  to remind us that they simply cause the entity
+    //  to be drawn with a certain sprite
+    Crafty.sprite(32, 'assets/spritesheet1.png', {
+      spr_carpet:    [0, 0],
+      spr_chair_right:[1, 0],
+      spr_chair_left: [2, 0],
+      spr_chair_front: [3, 0],
+      spr_worm_washer: [4, 0]
+    })
+
+    Crafty.sprite(64, 'assets/spritesheet1.png', {
+      spr_table:    [0, 1],
+
+    })
+
+    Crafty.sprite(64, 32, 'assets/spritesheet1.png', {
+      spr_feeder:    [1, 1],
+
+    })
+    Crafty.sprite(96, 'assets/spritesheet1.png', {
+      spr_wash_zone:    [2, 0],
+
+    });
+
+    // Now that our sprites are ready to draw, start the game
+    Crafty.scene('Game');
+  })
 });
+
+
 
 //   // Load our sprite map image
 //   Crafty.load(['assets/16x16_forest_1.gif'], function(){
