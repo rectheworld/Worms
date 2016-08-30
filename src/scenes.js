@@ -40,77 +40,78 @@ Crafty.scene('Game', function() {
 
 
   /// Generate Bookshelves
-  Crafty.e('Shelf').at(9,9)
-  Crafty.e('Shelf').at(9,10)
-  Crafty.e('Shelf').at(9,11)
-  Crafty.e('Shelf').at(9,12)
-  Crafty.e('Shelf').at(9,13)
-  Crafty.e('Shelf').at(9,14)
-  Crafty.e('Shelf').at(9,15)
-  Crafty.e('Shelf').at(9,16)
+  Crafty.e('ShelfRight').at(9, 9)
+  // Crafty.e('Shelf').at(9,9)
+  // Crafty.e('Shelf').at(9,10)
+  // Crafty.e('Shelf').at(9,11)
+  // Crafty.e('Shelf').at(9,12)
+  // Crafty.e('Shelf').at(9,13)
+  // Crafty.e('Shelf').at(9,14)
+  // Crafty.e('Shelf').at(9,15)
+  // Crafty.e('Shelf').at(9,16)
 
-  Crafty.e('Shelf').at(9,20)
-  Crafty.e('Shelf').at(9,21)
-  Crafty.e('Shelf').at(9,22)
-  Crafty.e('Shelf').at(9,23)
-  Crafty.e('Shelf').at(9,24)
-  Crafty.e('Shelf').at(9,25)
-  Crafty.e('Shelf').at(9,26)
-  Crafty.e('Shelf').at(9,27)
+  Crafty.e('ShelfRight').at(9,20)
+  // Crafty.e('Shelf').at(9,21)
+  // Crafty.e('Shelf').at(9,22)
+  // Crafty.e('Shelf').at(9,23)
+  // Crafty.e('Shelf').at(9,24)
+  // Crafty.e('Shelf').at(9,25)
+  // Crafty.e('Shelf').at(9,26)
+  // Crafty.e('Shelf').at(9,27)
 
-  Crafty.e('Shelf').at(13,20)
-  Crafty.e('Shelf').at(13,21)
-  Crafty.e('Shelf').at(13,22)
-  Crafty.e('Shelf').at(13,23)
-  Crafty.e('Shelf').at(13,24)
-  Crafty.e('Shelf').at(13,25)
-  Crafty.e('Shelf').at(13,26)
-  Crafty.e('Shelf').at(13,27)
+  Crafty.e('ShelfRight').at(13,20)
+  // Crafty.e('Shelf').at(13,21)
+  // Crafty.e('Shelf').at(13,22)
+  // Crafty.e('Shelf').at(13,23)
+  // Crafty.e('Shelf').at(13,24)
+  // Crafty.e('Shelf').at(13,25)
+  // Crafty.e('Shelf').at(13,26)
+  // Crafty.e('Shelf').at(13,27)
 
-  Crafty.e('Shelf').at(17,20)
-  Crafty.e('Shelf').at(17,21)
-  Crafty.e('Shelf').at(17,22)
-  Crafty.e('Shelf').at(17,23)
-  Crafty.e('Shelf').at(17,24)
-  Crafty.e('Shelf').at(17,25)
-  Crafty.e('Shelf').at(17,26)
-  Crafty.e('Shelf').at(17,27)
+  Crafty.e('ShelfRight').at(17,20)
+  // Crafty.e('Shelf').at(17,21)
+  // Crafty.e('Shelf').at(17,22)
+  // Crafty.e('Shelf').at(17,23)
+  // Crafty.e('Shelf').at(17,24)
+  // Crafty.e('Shelf').at(17,25)
+  // Crafty.e('Shelf').at(17,26)
+  // Crafty.e('Shelf').at(17,27)
 
-  Crafty.e('Shelf').at(21,20)
-  Crafty.e('Shelf').at(21,21)
-  Crafty.e('Shelf').at(21,22)
-  Crafty.e('Shelf').at(21,23)
-  Crafty.e('Shelf').at(21,24)
-  Crafty.e('Shelf').at(21,25)
-  Crafty.e('Shelf').at(21,26)
-  Crafty.e('Shelf').at(21,27)
+  Crafty.e('ShelfRight').at(21,20)
+  // Crafty.e('Shelf').at(21,21)
+  // Crafty.e('Shelf').at(21,22)
+  // Crafty.e('Shelf').at(21,23)
+  // Crafty.e('Shelf').at(21,24)
+  // Crafty.e('Shelf').at(21,25)
+  // Crafty.e('Shelf').at(21,26)
+  // Crafty.e('Shelf').at(21,27)
 
-  Crafty.e('Shelf').at(25,20)
-  Crafty.e('Shelf').at(25,21)
-  Crafty.e('Shelf').at(25,22)
-  Crafty.e('Shelf').at(25,23)
-  Crafty.e('Shelf').at(25,24)
-  Crafty.e('Shelf').at(25,25)
-  Crafty.e('Shelf').at(25,26)
-  Crafty.e('Shelf').at(25,27)
+  Crafty.e('ShelfLeft').at(25,20)
+  // Crafty.e('Shelf').at(25,21)
+  // Crafty.e('Shelf').at(25,22)
+  // Crafty.e('Shelf').at(25,23)
+  // Crafty.e('Shelf').at(25,24)
+  // Crafty.e('Shelf').at(25,25)
+  // Crafty.e('Shelf').at(25,26)
+  // Crafty.e('Shelf').at(25,27)
 
-  Crafty.e('Shelf').at(29,20)
-  Crafty.e('Shelf').at(29,21)
-  Crafty.e('Shelf').at(29,22)
-  Crafty.e('Shelf').at(29,23)
-  Crafty.e('Shelf').at(29,24)
-  Crafty.e('Shelf').at(29,25)
-  Crafty.e('Shelf').at(29,26)
-  Crafty.e('Shelf').at(29,27)
+  Crafty.e('ShelfLeft').at(29,20)
+  // Crafty.e('Shelf').at(29,21)
+  // Crafty.e('Shelf').at(29,22)
+  // Crafty.e('Shelf').at(29,23)
+  // Crafty.e('Shelf').at(29,24)
+  // Crafty.e('Shelf').at(29,25)
+  // Crafty.e('Shelf').at(29,26)
+  // Crafty.e('Shelf').at(29,27)
 
-  Crafty.e('Shelf').at(33,20)
-  Crafty.e('Shelf').at(33,21)
-  Crafty.e('Shelf').at(33,22)
-  Crafty.e('Shelf').at(33,23)
-  Crafty.e('Shelf').at(33,24)
-  Crafty.e('Shelf').at(33,25)
-  Crafty.e('Shelf').at(33,26)
-  Crafty.e('Shelf').at(33,27)
+  Crafty.e('ShelfLeft').at(33,20)
+  // Crafty.e('Shelf').at(33,21)
+  // Crafty.e('Shelf').at(33,22)
+  // Crafty.e('Shelf').at(33,23)
+  // Crafty.e('Shelf').at(33,24)
+  // Crafty.e('Shelf').at(33,25)
+  // Crafty.e('Shelf').at(33,26)
+  // Crafty.e('Shelf').at(33,27)
 
 
 
@@ -310,10 +311,24 @@ Crafty.scene('Loading', function(){
 
     })
 
+    Crafty.sprite(32, 224, 'assets/spritesheet1.png', {
+      spr_bookshelf_right:    [10, 0],
+      spr_bookshelf_left:    [11, 0],
+
+    })
+
     Crafty.sprite(64, 32, 'assets/spritesheet1.png', {
       spr_feeder:    [1, 1],
 
     })
+
+
+    Crafty.sprite(16, 16, 'assets/spritesheet1.png', {
+      spr_worm: [0, 8],
+
+    })
+
+
     Crafty.sprite(96, 'assets/spritesheet1.png', {
       spr_wash_zone:    [2, 0],
 

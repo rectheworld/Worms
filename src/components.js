@@ -45,10 +45,17 @@ Crafty.c('Tree', {
 });
 
 // A Bush is just an Actor with a certain sprite
-Crafty.c('Shelf', {
+Crafty.c('ShelfRight', {
   init: function() {
-    this.requires('Actor, Color, Solid')
-    .color('rgb(20, 185, 40)');
+    this.requires('Actor, Solid, spr_bookshelf_right')
+    //.color('rgb(20, 185, 40)');
+  },
+});
+
+Crafty.c('ShelfLeft', {
+  init: function() {
+    this.requires('Actor, Solid, spr_bookshelf_left')
+    //.color('rgb(20, 185, 40)');
   },
 });
 
@@ -125,18 +132,22 @@ Crafty.c('WashZone', {
 
 Crafty.c('WormFeeder', {
   init: function(){
-    this.requires('Actor, Solid, Keyboard, Mouse,spr_feeder')
+    this.requires('Actor, Solid, Keyboard, Mouse, SpriteAnimation, spr_feeder')
     //.color('rgb(200,0,0')
     .attr({w: Game.map_grid.tile.width * 2, h: Game.map_grid.tile.height})
     .bind('Click', function(MouseEvent){
         this.portions = this.portions + 10
-        console.log(this.portions)
+        //console.log(this.portions)
         })
+    .reel('Full', 1000, 0, 1, 1)
+    .reel('Empty', 1000, 1, 1, 1)
     .bind('EnterFrame', function(){
       //console.log(this.portions)
       if(this.portions > 0 & this.current_feeder_open == false){
+        this.animate('Full', 1)
         this.attractWorms()
       }else if(this.portions == 0 & this.current_feeder_open == true){
+        this.animate('Empty', 1)
         this.noFood()
       }
     });
@@ -211,7 +222,7 @@ Crafty.c('Table', {
 
 Crafty.c('Worm', {
   init: function(){
-    this.requires('Actor, Color, Collision, Carriable, Tween, Mouse')
+    this.requires('Actor, Collision, Carriable, Tween, Mouse, SpriteAnimation,spr_worm')
     .attr({h:Game.map_grid.tile.width / 2, w: Game.map_grid.tile.height /2})
     //.color('rgb(0,255,0)')
     .colorWorm()
@@ -219,6 +230,11 @@ Crafty.c('Worm', {
     .onHit('Pushable', this.stopOnSolids)
     .onHit('Player', this.stopOnSolids)
     .onHit('FeedZone', this.feedWorm)
+    // Um like animation
+    // .reel('SquiggleLeft', 1000, 0, 8, 2)
+    // .reel('SquiggleRight', 1000, 0, 9, 2)
+    .animate('SquiggleLeft', -1)
+
     //.checkHits('Solid')
     .bind('Click', function(MouseEvent){
       if(this.tracking == false){
@@ -285,16 +301,22 @@ Crafty.c('Worm', {
             open_spaces = [
               [this_x -1, this_y -1], //0 
               [this_x  , this_y -1], //1
-              [this_x + 1, this_y -1], //2
-              [this_x + 1, this_y], //3
-              [this_x + 1, this_y + 1], //4
-              [this_x , this_y + 1], //5
+              [this_x + 1, this_y -1], //2  // Right
+              [this_x + 1, this_y], //3  // Right 
+              [this_x + 1, this_y + 1], //4 /// Right 
+              [this_x , this_y + 1], //5 
               [this_x -1, this_y + 1], //6
               [this_x -1, this_y ], //7 
             ]
 
             this_index = Math.floor((Math.random() * open_spaces.length));
             this.destination_index = this_index 
+            if(this_index == 2 || this_index == 3 || this_index == 4){
+              this.animate('SquiggleRight', -1)
+            }else{
+              this.animate('SquiggleLeft')
+            }
+
             this.tween({x: open_spaces[this_index][0] * Game.map_grid.tile.height, y:open_spaces[this_index][1] * Game.map_grid.tile.width}, 1000)
         
             //this._log.push( "Tween to ".concat(String(open_spaces[this_index][0]), " ",String(open_spaces[this_index][1]), "From ", String(this.og_x), " ", String(this.og_y)) )
@@ -331,15 +353,25 @@ Crafty.c('Worm', {
   colorWorm: function(){
 
       if(this.clean == true & this.fed == true){
-        this.color('rgb(139,0,139)')
+        //this.color('rgb(139,0,139)')
+        this.reel('SquiggleLeft', 1000, 0, 14, 2)
+        this.reel('SquiggleRight', 1000, 0, 15, 2)
       }else if (this.fed == true){
-        this.color('rgb(220,20,60)')
+        //this.color('rgb(220,20,60)')
+        this.reel('SquiggleLeft', 1000, 0, 12, 2)
+        this.reel('SquiggleRight', 1000, 0, 13, 2)
       }else if(this.clean == true){
-          this.color('rgb(0,0,255)')
+          //this.color('rgb(0,0,255)')
+        this.reel('SquiggleLeft', 1000, 0, 10, 2)
+        this.reel('SquiggleRight', 1000, 0, 11, 2)
       }
       else{
-        this.color('rgb(0,255,0)')
+        ///this.color('rgb(0,255,0)')
+        this.reel('SquiggleLeft', 1000, 0, 8, 2)
+        this.reel('SquiggleRight', 1000, 0, 9, 2)
       }
+
+      this.animate('SquiggleRight', -1)
 
       return(this)
 },
@@ -499,7 +531,7 @@ Crafty.c('PlayerCharacter', {
 
       while(this_worm.hit('Solid') != false || this_worm.hit('Pushable') != false || this_worm.hit('Player') != false){
 
-          console.log('placeing worms')
+          ///console.log('placeing worms')
               
 
           // Repeating these in case we are mooving 
