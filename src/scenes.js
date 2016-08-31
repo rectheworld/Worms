@@ -303,7 +303,8 @@ Crafty.scene('Loading', function(){
       spr_chair_right:[1, 0],
       spr_chair_left: [2, 0],
       spr_chair_front: [3, 0],
-      spr_worm_washer: [4, 0]
+      spr_worm_washer: [0, 8],
+      spr_player: [1,4]
     })
 
     Crafty.sprite(64, 'assets/spritesheet1.png', {

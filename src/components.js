@@ -61,15 +61,16 @@ Crafty.c('ShelfLeft', {
 
 Crafty.c('WormWasher', {
   init: function(){
-    this.requires('Actor, Solid ,Keyboard, Collision, WormWasher, spr_worm_washer')
+    this.requires('Actor, Solid ,Keyboard, Collision, WormWasher, spr_worm_washer, SpriteAnimation')
     .attr({w: Game.map_grid.tile.width, h: Game.map_grid.tile.height})
-
+    .reel('WashCycle', 1000, 0, 8, 8)
     ;
   },
 
   WashWorms: function(){
     // Create a washZone
     //console.log(this.x - Game.map_grid.tile.width, this.y - Game.map_grid.tile.height)
+    this.animate("WashCycle", 8)
     Crafty.e('WashZone').at(this.x/ Game.map_grid.tile.width - 1, this.y / Game.map_grid.tile.height -1)
   },
 
@@ -409,10 +410,14 @@ Crafty.c('Worm', {
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
   init: function() {
-    this.requires('Actor, Player ,Fourway, Color, Collision, Keyboard')
+    this.requires('Actor, Player ,Fourway, Collision, Keyboard, spr_player, SpriteAnimation')
       .fourway(2)
-      .color('rgb(20, 75, 40)')
+      //.color('rgb(20, 75, 40)')
       .stopOnSolids()
+      .reel('StandRight', 1000, 1, 4, 1)
+      .reel('StandLeft', 1000, 1, 5, 1)
+      .reel('WalkRight', 300, 2,4, 4)
+      .reel('WalkLeft', 300, 2,5, 4)
       .bind('KeyDown', function(e){
         if(e.key == 67){
           this.c_pressed = true
@@ -431,12 +436,38 @@ Crafty.c('PlayerCharacter', {
               Game.wormWasher.WashWorms()
             }
       }
+      if(e.key == 39|| e.key == 68 || e.key == 38){
+
+        this.animate('WalkRight', -1)
+      }
+      if(e.key == 37|| e.key == 65 || e.key == 40){
+
+        this.animate('WalkLeft', -1)
+      }
+      })
+
+      .bind('KeyUp', function(e){
+        //this.pauseAnimation()
+        if(e.key == 39 || e.key == 68 || e.key == 38){
+        this.pauseAnimation()
+        this.animate('StandRight', 1)
+
+      }
+      if(e.key == 37|| e.key == 65 || e.key == 40){
+        this.pauseAnimation()
+        this.animate('StandLeft', 1)
+
+       } 
+
          
       })// End of Keydown Bind 
       .onHit('Carriable', this.pickupWorm)
       .onHit('Pushable', this.pushObject)
       // Whenever the PC touches a village, respond to the event
       .bind("Moved", function(){
+
+          
+
           if (this.x >= (Game.screen_view.width / 2))
           {
             Crafty.viewport.x = (this.x - (Game.screen_view.width / 2)) * -1;
