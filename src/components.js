@@ -79,6 +79,52 @@ Crafty.c('Door', {
   },
 });
 
+Crafty.c('OldLady', {
+  init: function() {
+    this.requires('Actor, Solid, spr_old_lady')
+  },
+
+});
+
+Crafty.c('IntroText_1', {
+  init: function() {
+    this.requires('Actor, Solid, spr_text1, Keyboard')
+    .attr({z:1})
+    .bind('KeyDown', function(e){
+        Crafty.e('IntroText_2').at(0,17)
+        this.destroy()
+    })
+  },
+});
+
+Crafty.c('IntroText_2', {
+  init: function() {
+    this.requires('Actor, Solid, spr_text1, Keyboard')
+    .bind('KeyDown', function(e){
+      Crafty.e('IntroText_3').at(0,17)
+        this.destroy()
+    })
+  },
+});
+
+Crafty.c('IntroText_3', {
+  init: function() {
+    this.requires('Actor, Solid, spr_text2, Keyboard')
+    .bind('KeyDown', function(e){
+        this.destroy()
+    })
+  },
+});
+
+Crafty.c('ReminderText', {
+  init: function() {
+    this.requires('Actor, Solid, spr_text2, Keyboard')
+    .bind('KeyDown', function(e){
+        this.destroy()
+    })
+  },
+});
+
 
 // A Bush is just an Actor with a certain sprite
 Crafty.c('ShelfRight', {
@@ -309,13 +355,24 @@ Crafty.c('Worm', {
             this.tween({x:this.feed_og_x, y:this.feed_og_y}, 1000)
           }
 
+          if(this.fed == true & this.clean == true){
+            this.sleepy_counter = this.sleepy_counter + 1
+          }
+
+          if(this.sleepy_counter == 1000){
+            console.log('Going to sleep')
+            this.sleeping = true
+            this.colorWorm()
+
+          }
+
           if(this.tracking){
                 console.log('Colliding: ', this.hit('Solid', type = "SAT", overlap = 1), this.hit('Pushable', type = "SAT", overlap = 1), this.hit('Player', type = "SAT", overlap = 1))
                 console.log("x",this.at().x)
               }
 
           /// Move a worm 20% of the time 
-          if(Math.random() < .01){
+          if(Math.random() < .01 & this.sleeping == false){
 
 
           if(this.tracking){
@@ -375,6 +432,8 @@ Crafty.c('Worm', {
   feeding: false,
   feed_counter:0,
   _log: [], 
+  sleepy_counter: 0, 
+  sleeping: false,
 
 
   stopOnSolids: function() {
@@ -400,8 +459,13 @@ Crafty.c('Worm', {
 
       if(this.clean == true & this.fed == true){
         //this.color('rgb(139,0,139)')
-        this.reel('SquiggleLeft', 1000, 0, 14, 2)
-        this.reel('SquiggleRight', 1000, 0, 15, 2)
+        if(this.sleeping == true){
+          console.log("in colorWorm")
+          this.reel('sleep', 5000, 10, 15, 2)
+        }else{
+          this.reel('SquiggleLeft', 1000, 0, 14, 2)
+          this.reel('SquiggleRight', 1000, 0, 15, 2)
+        }
       }else if (this.fed == true){
         //this.color('rgb(220,20,60)')
         this.reel('SquiggleLeft', 1000, 0, 12, 2)
@@ -417,7 +481,11 @@ Crafty.c('Worm', {
         this.reel('SquiggleRight', 1000, 0, 9, 2)
       }
 
-      this.animate('SquiggleRight', -1)
+      if(this.sleeping == false){
+        this.animate('SquiggleRight', -1)
+      }else{
+        this.animate('sleep', -1)
+      }
 
       return(this)
 },
@@ -459,6 +527,7 @@ Crafty.c('PlayerCharacter', {
       .fourway(2)
       .attr({z:1})
       //.color('rgb(20, 75, 40)')
+
       .stopOnSolids()
       .reel('StandRight', 1000, 1, 4, 1)
       .reel('StandLeft', 1000, 1, 5, 1)
@@ -471,6 +540,12 @@ Crafty.c('PlayerCharacter', {
       .bind('KeyDown', function(e){
         if(e.key == 67){
           this.c_pressed = true
+          if(this.x / 32.0 <= 11 & this.x/ 32.0 >= 10){
+            if(this.y /32.0  >= 15 & this.y/ 32.0 >=16){
+              console.log('here')
+              Crafty.e('ReminderText').at(0,17)
+            }
+          }
         }else{
           this.c_pressed = false 
         }

@@ -68,8 +68,14 @@ for (var x = 11; x < 20; x++) {
 
 
   // Player character, placed at 5, 5 on our grid
-  this.player = Crafty.e('PlayerCharacter').at(5, 5);
+  this.player = Crafty.e('PlayerCharacter').at(11, 16);
+  Crafty.viewport.x = (this.player.x - (Game.screen_view.width / 2)) * -1;
+  Crafty.viewport.y = (this.player.y - (Game.screen_view.height / 2)) * -1;
   this.occupied[this.player.at().x][this.player.at().y] = true;
+
+
+    /// Final lets create some intor text 
+  Crafty.e('IntroText_1').at(0,17)
 
   // Place a tree at every edge square on our grid of 16x16 tiles
   for (var x = 0; x < Game.map_grid.width; x++) {
@@ -115,6 +121,9 @@ for (var x = 11; x < 20; x++) {
 
   Crafty.e('Door').at(0,15)
 
+  /// Old lady 
+  Crafty.e('OldLady').at(10,16)  
+
 
   this_wall = Crafty.e('WallMolding').at(40, 6).origin('center')
   this_wall.rotation = 180
@@ -138,6 +147,9 @@ for (var x = 11; x < 20; x++) {
   this_wall.rotation = 180
 
   this_wall = Crafty.e('WallMolding').at(40, 25).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 32).origin('center')
   this_wall.rotation = 180
 
   
@@ -369,6 +381,8 @@ for (var x = 11; x < 20; x++) {
   }
 
 
+
+
 ///Crafty.e("Worm").at(15, 15)
 
   // Show the victory screen once all villages are visisted
@@ -433,11 +447,12 @@ Crafty.scene('Loading', function(){
       spr_chair_left: [2, 0],
       spr_chair_front: [3, 0],
       spr_worm_washer: [0, 8],
-      spr_player: [1,4],
+      spr_player: [1,5],
       spr_carpet_red: [2,2],
       spr_carpet_red_fridge: [3,2],
       spr_wall_molding:[3,3],
-      spr_food:[4,1]
+      spr_food:[4,1],
+      spr_old_lady: [4,2]
     })
 
     Crafty.sprite(64, 'assets/spritesheet1.png', {
@@ -472,6 +487,21 @@ Crafty.scene('Loading', function(){
       spr_wash_zone:    [2, 0],
 
     });
+
+    Crafty.load(['assets/texts.png'], function(){
+    // Once the image is loaded...
+
+    // Define the individual sprites in the image
+    // Each one (spr_tree, etc.) becomes a component
+    // These components' names are prefixed with "spr_"
+    //  to remind us that they simply cause the entity
+    //  to be drawn with a certain sprite
+    Crafty.sprite(672, 160, 'assets/texts.png', {
+      spr_text1: [0,0],
+      spr_text2: [0,1]
+
+    })
+    }); // end of text thing 
 
     // Now that our sprites are ready to draw, start the game
     Crafty.scene('Game');
