@@ -12,6 +12,49 @@ Crafty.scene('Game', function() {
   }
 
 
+
+
+for (var x = 11; x < 20; x++) {
+    for (var y = 10; y < 16; y++) {
+        // Place some carpet here 
+        
+        if(y == 15){
+          Crafty.e('CarpetRedFring').at(x,y);
+        }    
+
+        if(y == 10){
+          this_carpet = Crafty.e('CarpetRedFring').at(x,y);
+          this_carpet.origin('center')
+          this_carpet.rotation = 180
+        }
+
+        else{  
+        Crafty.e('CarpetRed').at(x, y);
+      }
+    }
+  }
+
+  for (var x = 35; x < 40; x++) {
+    for (var y = 28; y < 32; y++) {
+        // Place some carpet here 
+        
+        if(y == 31){
+          Crafty.e('CarpetRedFring').at(x,y);
+        }    
+
+        if(y == 28){
+          this_carpet = Crafty.e('CarpetRedFring').at(x,y);
+          this_carpet.origin('center')
+          this_carpet.rotation = 180
+        }
+
+        else{  
+        Crafty.e('CarpetRed').at(x, y);
+      }
+    }
+  }
+
+
   /// draw carpet all over the floor 
   for (var x = 0; x < Game.map_grid.width; x++) {
     for (var y = 0; y < Game.map_grid.height; y++) {
@@ -19,6 +62,9 @@ Crafty.scene('Game', function() {
         Crafty.e('Carpet').at(x, y);
     }
   }
+
+
+
 
 
   // Player character, placed at 5, 5 on our grid
@@ -31,13 +77,70 @@ Crafty.scene('Game', function() {
       var at_edge = x == 0 || x == Game.map_grid.width - 1 || y == 0 || y == Game.map_grid.height - 1;
 
       if (at_edge) {
-        // Place a tree entity at the current tile
-        Crafty.e('Tree').at(x, y);
+        if(y == 0){
+        if(x >= 1 & x < Game.map_grid.width - 1)
+            {
+              this_wall = Crafty.e('WallMolding').at(x, y);
+              this_wall.origin('center')
+              this_wall.rotation = 90
+              this.occupied[x][y] = true;
+            }
+            else{
+              Crafty.e('Wall').at(x, y);
+              this.occupied[x][y] = true;
+            }
+        }
+        else{
+        Crafty.e('Wall').at(x, y);
         this.occupied[x][y] = true;
-      } 
+      }
+
+      } /// End at edge 
     }
   }
 
+  Crafty.e('WallMolding').at(1, 14);
+  // Crafty.e('WallMolding').at(1, 15);
+  // Crafty.e('WallMolding').at(1, 16);
+  Crafty.e('WallMolding').at(1, 17);
+
+  Crafty.e('WallMolding').at(1, 6);
+  Crafty.e('WallMolding').at(1, 7);
+
+
+  Crafty.e('WallMolding').at(1, 24);
+  Crafty.e('WallMolding').at(1, 25);
+  Crafty.e('WallMolding').at(1, 32);
+
+
+  Crafty.e('Door').at(0,15)
+
+
+  this_wall = Crafty.e('WallMolding').at(40, 6).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 7).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 8).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 15).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 16).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 17).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 24).origin('center')
+  this_wall.rotation = 180
+
+  this_wall = Crafty.e('WallMolding').at(40, 25).origin('center')
+  this_wall.rotation = 180
+
+  
 
   /// Generate Bookshelves
   Crafty.e('ShelfRight').at(9, 9)
@@ -112,6 +215,19 @@ Crafty.scene('Game', function() {
   // Crafty.e('Shelf').at(33,25)
   // Crafty.e('Shelf').at(33,26)
   // Crafty.e('Shelf').at(33,27)
+
+
+  // On the Wall 
+  Crafty.e('ShelfRight').at(1,26)
+  Crafty.e('ShelfRight').at(1,18)
+  Crafty.e('ShelfRight').at(1,8)
+  Crafty.e('ShelfRight').at(1,0)
+
+  Crafty.e('ShelfLeft').at(40,0)
+  Crafty.e('ShelfLeft').at(40,9)
+  Crafty.e('ShelfLeft').at(40,18)
+  Crafty.e('ShelfLeft').at(40,26)
+
 
 
 
@@ -201,12 +317,25 @@ Crafty.scene('Game', function() {
   chair18 = Crafty.e('ChairRight').at(35, 14);
   Game.chair_list.push(chair18)
 
+  /// Reading corner
+  chair19 = Crafty.e('ChairLeft').at(36, 29);
+  Game.chair_list.push(chair19)
+  chair20 = Crafty.e('ChairRight').at(38, 29);
+  Game.chair_list.push(chair20)
+
 
   // The worm washer 
   Game.wormWasher = Crafty.e('WormWasher').at(16,10)
 
   // wormFeeder
   Game.wormFeeder = Crafty.e('WormFeeder').at(10,10)
+
+  // Food
+  Crafty.e('Food').at(2,1)
+  Crafty.e('Food').at(8,26)
+  Crafty.e('Food').at(24,22)
+  Crafty.e('Food').at(37,28)
+  Crafty.e('Food').at(35,9)
 
   // Worms
 
@@ -304,7 +433,11 @@ Crafty.scene('Loading', function(){
       spr_chair_left: [2, 0],
       spr_chair_front: [3, 0],
       spr_worm_washer: [0, 8],
-      spr_player: [1,4]
+      spr_player: [1,4],
+      spr_carpet_red: [2,2],
+      spr_carpet_red_fridge: [3,2],
+      spr_wall_molding:[3,3],
+      spr_food:[4,1]
     })
 
     Crafty.sprite(64, 'assets/spritesheet1.png', {
@@ -326,6 +459,11 @@ Crafty.scene('Loading', function(){
 
     Crafty.sprite(16, 16, 'assets/spritesheet1.png', {
       spr_worm: [0, 8],
+
+    })
+
+    Crafty.sprite(64, 96, 'assets/spritesheet1.png', {
+      spr_door: [0, 3],
 
     })
 

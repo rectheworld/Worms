@@ -35,14 +35,50 @@ Crafty.c('Carpet', {
   },
 });
 
-
-// A Tree is just an Actor with a certain sprite
-Crafty.c('Tree', {
+Crafty.c('Food', {
   init: function() {
-    this.requires('Actor, Color, Solid, Collision')
-    .color('rgb(51, 0, 0)');
+    this.requires('Actor, Carriable ,spr_food, Collision ,Food')
+
   },
 });
+
+Crafty.c('CarpetRed', {
+  init: function() {
+    this.requires('Actor, spr_carpet_red')
+    .attr({z:-1});
+
+  },
+});
+
+
+Crafty.c('CarpetRedFring', {
+  init: function() {
+    this.requires('Actor, spr_carpet_red_fridge')
+    .attr({z:-1});
+
+  },
+});
+
+// A Tree is just an Actor with a certain sprite
+Crafty.c('Wall', {
+  init: function() {
+    this.requires('Actor, Color, Solid, Collision')
+    .color('rgb(96, 83, 42)');
+  },
+});
+
+Crafty.c('WallMolding', {
+  init: function() {
+    this.requires('Actor, Solid,Collision, spr_wall_molding')
+  },
+});
+
+Crafty.c('Door', {
+  init: function() {
+    this.requires('Actor, Solid, spr_door')
+  },
+});
+
 
 // A Bush is just an Actor with a certain sprite
 Crafty.c('ShelfRight', {
@@ -97,7 +133,7 @@ Crafty.c('WormWasher', {
 Crafty.c('WashZone', {
   init: function(){
     this.requires('Actor, Collision, Circle, spr_wash_zone')
-    .attr({w: Game.map_grid.tile.width * 3, h:Game.map_grid.tile.height * 3, z: -.9})
+    .attr({w: Game.map_grid.tile.width * 3, h:Game.map_grid.tile.height * 3, z: -.8})
     //color('rgb(176,196,222)')
     .onHit('Carriable', this.cleanWorm)
     .bind('EnterFrame', function(){
@@ -133,13 +169,9 @@ Crafty.c('WashZone', {
 
 Crafty.c('WormFeeder', {
   init: function(){
-    this.requires('Actor, Solid, Keyboard, Mouse, SpriteAnimation, spr_feeder')
+    this.requires('Actor, Solid, Keyboard, SpriteAnimation, spr_feeder')
     //.color('rgb(200,0,0')
     .attr({w: Game.map_grid.tile.width * 2, h: Game.map_grid.tile.height})
-    .bind('Click', function(MouseEvent){
-        this.portions = this.portions + 10
-        //console.log(this.portions)
-        })
     .reel('Full', 1000, 0, 1, 1)
     .reel('Empty', 1000, 1, 1, 1)
     .bind('EnterFrame', function(){
@@ -157,6 +189,10 @@ Crafty.c('WormFeeder', {
   portions: 0, 
   current_feeder_open: false,
 
+  addFood: function(){
+    this.portions = this.portions + 10
+  },
+
   attractWorms: function(){
     this.current_feeder_open = true
     this.feedzone = Crafty.e('FeedZone')
@@ -166,7 +202,16 @@ Crafty.c('WormFeeder', {
   noFood: function(){
     this.current_feeder_open = false
     this.feedzone.destroy()
-  }
+  },
+
+
+  getPoly: function(){
+
+    var cpoly = new Crafty.circle(this.x + 32 , this.y + 32, Game.map_grid.tile.width * 3) // Will be used for colision detetions later 
+    this.cpoly = cpoly
+    //this.collision(this.poly)
+    return(this.cpoly)
+}
 
 
 
@@ -223,7 +268,7 @@ Crafty.c('Table', {
 
 Crafty.c('Worm', {
   init: function(){
-    this.requires('Actor, Collision, Carriable, Tween, Mouse, SpriteAnimation,spr_worm')
+    this.requires('Actor, Collision, Carriable, Tween, Mouse, SpriteAnimation, Worm ,spr_worm')
     .attr({h:Game.map_grid.tile.width / 2, w: Game.map_grid.tile.height /2})
     //.color('rgb(0,255,0)')
     .colorWorm()
@@ -412,12 +457,17 @@ Crafty.c('PlayerCharacter', {
   init: function() {
     this.requires('Actor, Player ,Fourway, Collision, Keyboard, spr_player, SpriteAnimation')
       .fourway(2)
+      .attr({z:1})
       //.color('rgb(20, 75, 40)')
       .stopOnSolids()
       .reel('StandRight', 1000, 1, 4, 1)
       .reel('StandLeft', 1000, 1, 5, 1)
+      .reel('StandDown', 1000, 1, 6, 1)
+      .reel('StandUp', 1000, 1, 7, 1)
       .reel('WalkRight', 300, 2,4, 4)
       .reel('WalkLeft', 300, 2,5, 4)
+      .reel("WalkDown", 300, 1, 6, 4)
+      .reel("WalkUp", 300, 1, 7, 4)
       .bind('KeyDown', function(e){
         if(e.key == 67){
           this.c_pressed = true
@@ -427,46 +477,107 @@ Crafty.c('PlayerCharacter', {
 
         if(e.key == 86){
           this.dropWorms()
+          
             
 
-            poly = Game.wormWasher.getPoly()
+            ww_poly = Game.wormWasher.getPoly()
 
-            if(poly.containsPoint(this.x, this.y)!= false){
+            if(ww_poly.containsPoint(this.x, this.y)!= false){
 
               Game.wormWasher.WashWorms()
             }
+
+            wf_poly = Game.wormFeeder.getPoly()
+            if(wf_poly.containsPoint(this.x, this.y)!= false){
+              
+              if(this.carryingFood == true){
+                Game.wormFeeder.addFood()
+                this.carryingFood = false
+                this.dropFood(destroy = true)
+              }
+            }else{
+                this.dropFood()
+            }
       }
-      if(e.key == 39|| e.key == 68 || e.key == 38){
+
+
+      if(this.isPlaying()){
+        this.pauseAnimation()
+      }
+
+      if(e.key == 39|| e.key == 68){ /// Right 
 
         this.animate('WalkRight', -1)
+        this.right_press = true
       }
-      if(e.key == 37|| e.key == 65 || e.key == 40){
 
-        this.animate('WalkLeft', -1)
+      if(e.key == 40){  
+        this.animate('WalkDown', -1) /// Down
+        this.down_press = true
       }
+
+      if(e.key == 37|| e.key == 65 ){
+
+        this.animate('WalkLeft', -1) // LEft
+        this.left_press = true 
+      }
+
+      if(e.key == 38){
+        this.animate('WalkUp', -1) /// Up 
+        this.up_press = true
+      }
+
       })
 
       .bind('KeyUp', function(e){
-        //this.pauseAnimation()
-        if(e.key == 39 || e.key == 68 || e.key == 38){
-        this.pauseAnimation()
-        this.animate('StandRight', 1)
 
+      if(e.key == 39|| e.key == 68){ /// Right 
+
+        this.right_press = false
       }
-      if(e.key == 37|| e.key == 65 || e.key == 40){
-        this.pauseAnimation()
-        this.animate('StandLeft', 1)
 
-       } 
+      if(e.key == 40){  
+        this.down_press = false
+      }
 
-         
+      if(e.key == 37|| e.key == 65 ){
+        this.left_press = false 
+      }
+
+      if(e.key == 38){
+
+        this.up_press = false
+      }
+
+        
+        if(this.down_press != true & this.right_press != true  & this.up_press != true  & this.left_press != true ){
+          //this.pauseAnimation()
+          if(this.isPlaying('WalkUp')){
+            this.animate('StandUp')
+          }if(this.isPlaying('WalkDown')){
+            this.animate('StandDown')
+          }if(this.isPlaying('WalkLeft')){
+            this.animate('StandLeft')
+          }if(this.isPlaying('WalkRight')){
+            this.animate('StandRight')
+          }
+        }
+
       })// End of Keydown Bind 
-      .onHit('Carriable', this.pickupWorm)
+
+      .onHit('Worm', this.pickupWorm)
+      .onHit('Food', this.pickupFood)
       .onHit('Pushable', this.pushObject)
       // Whenever the PC touches a village, respond to the event
-      .bind("Moved", function(){
+      .bind("Moved", function(oldPos){
+
+          // console.log('oldPos', oldPos.x, oldPos.y)
+          // console.log('current pos', this.x, this.y)
+
+
 
           
+          /// Set Viewpoint 
 
           if (this.x >= (Game.screen_view.width / 2))
           {
@@ -500,6 +611,7 @@ Crafty.c('PlayerCharacter', {
 
   worms_in_arms: 0,
   worm_in_arms_properties: [],
+  carryingFood: false,
 
   pickupWorm: function(data){
     
@@ -526,6 +638,17 @@ Crafty.c('PlayerCharacter', {
 
 
   }, // end pick up Worm 
+
+  pickupFood: function(data) {
+    if (this.c_pressed == true & this.carryingFood == false){
+      this_food = data[0].obj
+      this.carryingFood = true
+      this_food.destroy()
+    }else{
+      this.stopMovement()
+    }
+    
+  },
 
   updateWormTracker: function() {
     document.getElementById('_num_worms').innerHTML = String(this.worms_in_arms)
@@ -605,6 +728,69 @@ Crafty.c('PlayerCharacter', {
     this.updateWormTracker()
 
   }, // end of Drop Worms 
+
+  dropFood: function(destroy = false){
+        // get list of open spaces 
+    this_x = Math.round(this.at().x)
+    this_y = Math.round(this.at().y)
+
+    //console.log(this_x, this_y)
+    // Not really open yet but will do 
+
+    open_spaces = [
+      [this_x -1, this_y -1],
+      [this_x  , this_y -1],
+      [this_x + 1, this_y -1],
+      [this_x + 1, this_y],
+      [this_x + 1, this_y + 1],
+      [this_x , this_y + 1],
+      [this_x -1, this_y + 1],
+      [this_x -1, this_y ],
+    ]
+
+    if(this.carryingFood == true){
+
+
+      // pick a random open pace 
+      this_index = Math.floor((Math.random() * open_spaces.length));
+
+      this_food = Crafty.e("Food").at(open_spaces[this_index][0], open_spaces[this_index][1])
+
+      while(this_food.hit('Solid') != false || this_food.hit('Pushable') != false || this_food.hit('Player') != false){  
+
+          // Repeating these in case we are mooving 
+          this_x = Math.round(this.at().x)
+          this_y = Math.round(this.at().y)
+
+          //console.log(this_x, this_y)
+          // Not really open yet but will do 
+
+          open_spaces = [
+            [this_x -1, this_y -1],
+            [this_x  , this_y -1],
+            [this_x + 1, this_y -1],
+            [this_x + 1, this_y],
+            [this_x + 1, this_y + 1],
+            [this_x , this_y + 1],
+            [this_x -1, this_y + 1],
+            [this_x -1, this_y ],
+          ]
+
+          this_index = Math.floor((Math.random() * open_spaces.length));
+
+          this_food.at(open_spaces[this_index][0], open_spaces[this_index][1])
+      }
+
+    }
+
+    // empty these lists 
+    this.carryingFood = false
+
+    if(destroy == true){
+      this_food.destroy()
+    }
+
+  },
 
   pushObject: function(data){
     this._speed = this._speed/ 10
