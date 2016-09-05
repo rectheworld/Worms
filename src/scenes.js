@@ -351,7 +351,7 @@ for (var x = 11; x < 20; x++) {
 
   // Worms
 
-  Game.worm_list = []
+  Game.sleeping_worm_num = 0
   worm_num = 50
   /// Create some worms 
   for(i = 1; i <= worm_num; i++){
@@ -375,9 +375,6 @@ for (var x = 11; x < 20; x++) {
 
       //console.log(this_worm.hit('Solid'), this_worm.hit('Pushable')) 
     }
-
-    // add this worm to the worm list 
-    Game.worm_list.push(this_worm)
   }
 
 
@@ -386,7 +383,7 @@ for (var x = 11; x < 20; x++) {
 ///Crafty.e("Worm").at(15, 15)
 
   // Show the victory screen once all villages are visisted
-  this.show_victory = this.bind('VillageVisited', function() {
+this.show_victory = this.bind('VillageVisited', function() {
     if (!Crafty('Village').length) {
       Crafty.scene('Victory');
     }
@@ -410,14 +407,18 @@ Crafty.scene('Victory', function() {
 
   // Watch for the player to press a key, then restart the game
   //  when a key is pressed
-  this.restart_game = this.bind('KeyDown', function() {
-    Crafty.scene('Game');
+  this.restart_game = this.bind('KeyDown', function(e) {
+    if(e.key == 13){
+        Crafty.scene('Game');
+        }
   });
-}, function() {
+}, function(e) {
   // Remove our event binding from above so that we don't
   //  end up having multiple redundant event watchers after
   //  multiple restarts of the game
-  this.unbind('KeyDown', this.restart_game);
+  if(e.key == 13){
+    this.unbind('KeyDown', this.restart_game);
+    }
 });
 
 // Loading scene
@@ -498,7 +499,8 @@ Crafty.scene('Loading', function(){
     //  to be drawn with a certain sprite
     Crafty.sprite(672, 160, 'assets/texts.png', {
       spr_text1: [0,0],
-      spr_text2: [0,1]
+      spr_text2: [0,1],
+      spr_text_complete: [0,2]
 
     })
     }); // end of text thing 
@@ -508,25 +510,3 @@ Crafty.scene('Loading', function(){
   })
 });
 
-
-
-//   // Load our sprite map image
-//   Crafty.load(['assets/16x16_forest_1.gif'], function(){
-//     // Once the image is loaded...
-
-//     // Define the individual sprites in the image
-//     // Each one (spr_tree, etc.) becomes a component
-//     // These components' names are prefixed with "spr_"
-//     //  to remind us that they simply cause the entity
-//     //  to be drawn with a certain sprite
-//     Crafty.sprite(16, 'assets/16x16_forest_1.gif', {
-//       spr_tree:    [0, 0],
-//       spr_bush:    [1, 0],
-//       spr_village: [0, 1],
-//       spr_player:  [1, 1]
-//     });
-
-//     // Now that our sprites are ready to draw, start the game
-//     Crafty.scene('Game');
-//   })
-// });

@@ -125,6 +125,17 @@ Crafty.c('ReminderText', {
   },
 });
 
+Crafty.c('CompletionText', {
+  init: function() {
+    this.requires('Actor, Solid, spr_text_complete, Keyboard')
+    .bind('KeyDown', function(e){
+
+        this.destroy()
+        
+    })
+  },
+});
+
 
 // A Bush is just an Actor with a certain sprite
 Crafty.c('ShelfRight', {
@@ -361,6 +372,7 @@ Crafty.c('Worm', {
 
           if(this.sleepy_counter == 1000){
             this.sleeping = true
+            Game.sleeping_worm_num = Game.sleeping_worm_num + 1
             this.colorWorm()
 
           }
@@ -538,9 +550,14 @@ Crafty.c('PlayerCharacter', {
       .bind('KeyDown', function(e){
         if(e.key == 67){
           this.c_pressed = true
-          if(this.x / 32.0 <= 11 & this.x/ 32.0 >= 10){
-            if(this.y /32.0  >= 15 & this.y/ 32.0 >=16){
-              Crafty.e('ReminderText').at(0,17)
+          if(this.x / 32.0 >= 10 & this.x/ 32.0 < 12){
+            if(this.y /32.0  >= 15 & this.y/ 32.0 <17){
+              console.log(Game.sleeping_worm_num)
+              if(Game.sleeping_worm_num == 10){
+                Crafty.e('CompletionText').at(0,17)
+              }else{
+                Crafty.e('ReminderText').at(0,17)
+              }
             }
           }
         }else{
@@ -700,6 +717,12 @@ Crafty.c('PlayerCharacter', {
             'asleep': this_worm.asleep,
         })
 
+        // Update the Worm Counter if the worm was asleep and them woken
+        // by being caried 
+        if(this_worm.sleeping == true){
+        Game.sleeping_worm_num = Game.sleeping_worm_num - 1
+        }
+
         this_worm.destroy()
 
         document.getElementById('_num_worms').innerHTML = String(this.worms_in_arms)
@@ -787,6 +810,9 @@ Crafty.c('PlayerCharacter', {
       this_worm.fed = this.worm_in_arms_properties[i].fed
       this_worm.clean = this.worm_in_arms_properties[i].clean
       this_worm.asleep = this.worm_in_arms_properties[i].asleep
+
+      this_worm.og_x = open_spaces[this_index][0]
+      this_worm.og_y = open_spaces[this_index][1]
 
       this_worm.colorWorm()
 
