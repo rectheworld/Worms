@@ -360,7 +360,6 @@ Crafty.c('Worm', {
           }
 
           if(this.sleepy_counter == 1000){
-            console.log('Going to sleep')
             this.sleeping = true
             this.colorWorm()
 
@@ -460,7 +459,6 @@ Crafty.c('Worm', {
       if(this.clean == true & this.fed == true){
         //this.color('rgb(139,0,139)')
         if(this.sleeping == true){
-          console.log("in colorWorm")
           this.reel('sleep', 5000, 10, 15, 2)
         }else{
           this.reel('SquiggleLeft', 1000, 0, 14, 2)
@@ -542,7 +540,6 @@ Crafty.c('PlayerCharacter', {
           this.c_pressed = true
           if(this.x / 32.0 <= 11 & this.x/ 32.0 >= 10){
             if(this.y /32.0  >= 15 & this.y/ 32.0 >=16){
-              console.log('here')
               Crafty.e('ReminderText').at(0,17)
             }
           }
